@@ -1,4 +1,14 @@
 {
   "name": "verifier",
-  "version": "1.0.0"
+  "version": "1.0.0",
+  "dependencies": {
+    "react": "^16.3.1",
+    "react-dom": "^16.3.1"
+  },
+  "devDependencies": {
+    "awesome-typescript-loader": "^5.0.0",
+    "typescript": "^2.8.1",
+    "webpack": "^4.5.0",
+    "webpack-dev-server": "^3.1.3"
+  }
 }
