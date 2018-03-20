@@ -1,5 +1,7 @@
-const path              = require('path'),
-      HtmlWebpackPlugin = require('html-webpack-plugin');
+const path              = require('path')
+      HtmlWebpackPlugin = require('html-webpack-plugin'),
+      ExtractTextPlugin = require('extract-text-webpack-plugin');
+
 module.exports = {
   mode: 'production',
   entry: './src/index.tsx',
@@ -18,11 +20,31 @@ module.exports = {
         test: /\.js$/,
         loader: ['source-map-loader']
       },
+      {
+        test: /\.scss$/,
+        use: ExtractTextPlugin.extract({
+          use: [
+            {
+              loader: 'css-loader',
+              options: {
+                minimize: true
+              }
+            },
+            'sass-loader'
+          ]
+        })
+      }
     ]
   },
   plugins: [
     new HtmlWebpackPlugin({
       template: './index.html'
-    })
-  ]
+    }),
+    new ExtractTextPlugin('style.css'),
+    // new webpack.HotModuleReplacementPlugin()
+  ],
+  devtool: 'source-map',
+  resolve: {
+    extensions: ['.js', '.ts', '.tsx', '.css', '.scss'],
+  },
 }
