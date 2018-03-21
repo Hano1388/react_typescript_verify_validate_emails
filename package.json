@@ -1,18 +1,33 @@
 {
   "name": "verifier",
   "version": "1.0.0",
+  "description": "",
+  "main": "webpack.config.js",
+  "scripts": {
+    "start": "webpack-dev-server"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "dependencies": {
     "html-webpack-plugin": "^3.2.0",
     "react": "^16.3.1",
-    "react-dom": "^16.3.1"
+    "react-dom": "^16.3.1",
+    "react-shadow-dom-retarget-events": "^1.0.8"
   },
   "devDependencies": {
-    "@types/react": "^16.3.10",
-    "@types/react-dom": "^16.0.5",
+    "@types/react": "^16.3.6",
+    "@types/react-dom": "^16.0.4",
     "awesome-typescript-loader": "^5.0.0",
+    "css-loader": "^0.28.11",
+    "extract-text-webpack-plugin": "^4.0.0-beta.0",
+    "node-sass": "^4.8.3",
+    "sass-loader": "^6.0.7",
     "source-map-loader": "^0.2.3",
+    "style-loader": "^0.20.3",
     "typescript": "^2.8.1",
     "webpack": "^4.5.0",
+    "webpack-cli": "^2.0.14",
     "webpack-dev-server": "^3.1.3"
   }
 }
