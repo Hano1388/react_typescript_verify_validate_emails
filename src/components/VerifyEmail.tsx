@@ -6,7 +6,12 @@ export class VerifyEmail extends React.Component<{}, IState> {
 
     this.state = {
       email: '',
-      response: []
+      response: [],
+      initialExt: [
+        'gmail.com',
+        'yahoo.com',
+        'hotmail.com'
+      ]
     }
   }
   verifyEmail(email: any) {
@@ -51,16 +56,26 @@ export class VerifyEmail extends React.Component<{}, IState> {
     })
   }
 
+  handleChange(e: any) {
+    // e.preventDefault();
+    if (e.target.value.slice(-1) === '@') {
+        console.log('hello====================')
+    }
+    this.setState({ email: e.target.value })
+  }
+
   render() {
     console.log('verify email state: ', this.state);
     return (
       <div>
-        <form onSubmit={(e) => this.handleSubmit(e)}>
+        <form onSubmit={ (e) => this.handleSubmit(e) }>
           <input
             type='text'
             placeholder='someone@example.com'
-            value={ this.state.email}
-            onChange={(e) => this.setState({ email: e.target.value })} />
+            value={ this.state.email }
+
+            onChange={ (e) => this.handleChange(e) }
+          />
           <button type='submit'>Check Email</button>
         </form>
         {/* <section>{ Render messages here }</section> */}
@@ -76,4 +91,5 @@ export class VerifyEmail extends React.Component<{}, IState> {
 interface IState {
   email: string;
   response: Array<string>;
+  initialExt: Array<string>;
 }
