@@ -85,11 +85,12 @@ export class VerifyEmail extends React.Component<any, IState> {
   render() {
     return (
       <div className='form-containr'>
-        <ReactAutocomplete
-          inputProps={{ placeholder: 'example@extension.com' }}
-          items={ this.state.initialExts }
-          shouldItemRender={ (item: any, value: any) => {
-            return item.label.toLowerCase().indexOf(value.split('@').pop().toLowerCase()) > -1
+        <form>
+          <ReactAutocomplete
+            inputProps={{ placeholder: 'example@domain.com' }}
+            items={ this.state.initialExts }
+            shouldItemRender={ (item: any, value: any) => {
+              return item.label.toLowerCase().indexOf(value.split('@').pop().toLowerCase()) > -1
             }
           }
           getItemValue={ item => item.label}
@@ -98,13 +99,15 @@ export class VerifyEmail extends React.Component<any, IState> {
             <div
               key={item.id}
               style={{ backgroundColor: highlighted ? '#eee' : 'transparent'}}>
-                { (this.popUpExtensions())? item.label : '' }
+              { (this.popUpExtensions())? item.label : '' }
             </div>
-            }
+          }
           value={ this.state.value }
           onChange={e => this.setState({ value: e.target.value })}
           onSelect={ emailExtension => this.setState({ value: this.state.value.slice(0, this.state.value.indexOf('@') + 1) + emailExtension })}
-        />
+          />
+          <button type='submit'>VERIFY</button>
+        </form>
         <section>
         </section>
       </div>
