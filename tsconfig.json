@@ -8,10 +8,15 @@
   "preserveConstEnums": true,
   "removeComments": true,
   "sourceMap": true,
-  "noImplicitAny": true,
-  "target": "es5"
+  "noImplicitAny": false,
+  "target": "es6",
+  "lib": [
+    "dom",
+    "es6"
+  ]
   },
   "include": [
-    "./src/**/*"
+    "./src/**/*",
+    "typings/**/*.ts"
   ]
 }

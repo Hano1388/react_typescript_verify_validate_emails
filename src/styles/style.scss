@@ -7,11 +7,11 @@ body {
   background-color: $background-grey;
 }
 
-form {
+.form-containr {
   text-align: center;
 }
 
-form input[type=text] {
+.form-containr input {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   letter-spacing: 2px;
   border: 0px;

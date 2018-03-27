@@ -1,26 +1,29 @@
 import * as React from 'react';
+// import * as ReactAutocomplete from 'react-autocomplete';
+const ReactAutocomplete = require('react-autocomplete') as any;
 
-export class VerifyEmail extends React.Component<{}, IState> {
-  constructor(props: {}) {
+export class VerifyEmail extends React.Component<any, IState> {
+  constructor(props: any) {
     super(props);
 
     this.state = {
-      email: '',
       response: [],
-      initialExt: [
-        'gmail.com',
-        'yahoo.com',
-        'hotmail.com'
+      email: '',
+      value: '',
+      initialExts: [
+        { id: 1, label: 'gmail.com' },
+        { id: 2, label: 'yahoo.com' },
+        { id: 3, label: 'hotmail.com' },
       ]
     }
   }
-  verifyEmail(email: any) {
+  verifyEmail(value: any) {
     // var corsApiUrl = 'https://cors-anywhere.herokuapp.com/';
     var corsApiHost = 'cors-anywhere.herokuapp.com';
     var corsApiUrl = 'https://' + corsApiHost + '/';
 
     var u = new URLSearchParams();
-    u.append('email', email);
+    u.append('email', value);
     u.append('method', 'flickr.interestingness.getList');
     // Verify Single Email apikey
     u.append('api_key', 'test_4f197423c9ab24202ae309f578a19e4db229198c2c5729e0b64cff6139cbb761');
@@ -40,14 +43,14 @@ export class VerifyEmail extends React.Component<{}, IState> {
     });
   }
 
-  componentDidUpdate(prevProps: any, prevState: any) {
-      const { email } = this.state;
-      if(email !== prevState.email){
-          console.log('update email!');
-          this.verifyEmail(email);
-      }
-
-  }
+  // componentDidUpdate(prevProps: any, prevState: any) {
+  //     const { value } = this.state;
+  //     if(value !== prevState.value){
+  //         console.log('update email value!');
+  //         this.verifyEmail(value);
+  //     }
+  //
+  // }
 
   handleSubmit(e: any) {
     e.preventDefault();
@@ -64,32 +67,72 @@ export class VerifyEmail extends React.Component<{}, IState> {
     this.setState({ email: e.target.value })
   }
 
-  render() {
-    console.log('verify email state: ', this.state);
-    return (
-      <div>
-        <form onSubmit={ (e) => this.handleSubmit(e) }>
-          <input
-            type='text'
-            placeholder='someone@example.com'
-            value={ this.state.email }
+  popUpExtensions() {
+    // getting entered extension by user if user has entered any or selected from popular extensions
+    let enteredExt = this.state.value.slice(this.state.value.indexOf('@') + 1);
+    // getting the label of popular extensions we already have in the state
+    let initialExts = this.state.initialExts.map(obj => obj.label);
+    // below I am counting the number of @ signs
+    let atSignCounter = this.state.value.length - this.state.value.replace(new RegExp('@', 'g'), '').length == 1;
+    // if we have only one @ sign and the entered extension(if entered) is not one of the popular extensions, then the list will popup
+    let shouldPopUp = atSignCounter && !(initialExts.indexOf(enteredExt) > -1)
+    return shouldPopUp;
+  }
 
-            onChange={ (e) => this.handleChange(e) }
-          />
-          <button type='submit'>Check Email</button>
-        </form>
-        {/* <section>{ Render messages here }</section> */}
+  render() {
+    return (
+      <div className='form-containr'>
+        <ReactAutocomplete
+          inputProps={{ placeholder: 'example@extension.com' }}
+          items={ this.state.initialExts }
+          shouldItemRender={ (item: any, value: any) => {
+            // debugger;
+            return item.label.toLowerCase().indexOf(value.split('@').pop().toLowerCase()) > -1
+            {/* return item.label.toLowerCase().indexOf(value.split('@').pop().toLowerCase()) > -1 && this.popUpExtensions(); */}
+            {/* return this.popUpExtensions() */}
+          } }
+          // shouldItemRender={ (item, value) => this.renderItem(item, value) }
+          getItemValue={ item => item.label}
+          renderItem={(item, highlighted) =>
+            <div
+              key={item.id}
+              style={{ backgroundColor: highlighted ? '#eee' : 'transparent'}}
+              >
+                {/* { (isExtension)? item.label : '' } */}
+                { (this.popUpExtensions())? item.label : '' }
+                {/* { item.label } */}
+              </div>
+            }
+          value={ this.state.value }
+          onChange={e => this.setState({ value: e.target.value })}
+          // onSelect={value => this.setState({ value })}
+          onSelect={ emailExtension => this.setState({ value: this.state.value.slice(0, this.state.value.indexOf('@') + 1) + emailExtension })}
+        />
+        <section>
+        </section>
       </div>
     )
   }
 }
 
 // interface IProps {
-//   email: string;
+//     inputProps: string;
 // }
+
+export interface extensions {
+    id: number;
+    label: string;
+}
+
 
 interface IState {
   email: string;
-  response: Array<string>;
-  initialExt: Array<string>;
+  response: Array<object>;
+  value: string;
+  // initialExts: extensionGroup;
+  initialExts: Array<extensions>;
 }
+
+// My regular expression template
+// var regex = new RegExp(/^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i);
+// var bppp = regex.test('hano@gmail.com');
