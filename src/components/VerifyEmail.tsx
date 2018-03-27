@@ -9,6 +9,7 @@ export class VerifyEmail extends React.Component<any, IState> {
       response: [],
       email: '',
       value: '',
+      emailError: '',
       initialExts: [
         { id: 1, label: 'gmail.com' },
         { id: 2, label: 'yahoo.com' },
@@ -20,7 +21,7 @@ export class VerifyEmail extends React.Component<any, IState> {
       ]
     }
   }
-  verifyEmail(value: any) {
+  verifyEmail = (value: any) => {
     // var corsApiUrl = 'https://cors-anywhere.herokuapp.com/';
     var corsApiHost = 'cors-anywhere.herokuapp.com';
     var corsApiUrl = 'https://' + corsApiHost + '/';
@@ -55,22 +56,31 @@ export class VerifyEmail extends React.Component<any, IState> {
   //
   // }
 
-  // handleSubmit(e: any) {
-  //   e.preventDefault();
-  //   this.setState({
-  //     email: this.state.email
-  //   })
-  // }
+  validate = () => {
+    let regex         = new RegExp(/^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i),
+        isValidFormat = regex.test(this.state.email),
+        isError       = false;
 
-  // handleChange(e: any) {
-  //   // e.preventDefault();
-  //   if (e.target.value.slice(-1) === '@') {
-  //       console.log('hello====================')
-  //   }
-  //   this.setState({ email: e.target.value })
-  // }
+    if(!isValidFormat) {
+      isError = true;
+      this.setState({
+        emailError: 'email should be in the format someone@example.com'
+      })
+    }
+    return isError;
+  }
 
-  popUpExtensions() {
+  handleSubmit = (e: any) => {
+    e.preventDefault();
+
+    const error = this.validate();
+    if (!error) {
+      this.setState({ emailError: '' });
+      this.verifyEmail(this.state.email);
+    }
+  }
+
+  popUpExtensions = () => {
     // getting entered extension by user if user has entered any or selected from popular extensions
     let enteredExt = this.state.value.slice(this.state.value.indexOf('@') + 1);
     // getting the label of popular extensions we already have in the state
@@ -83,9 +93,15 @@ export class VerifyEmail extends React.Component<any, IState> {
   }
 
   render() {
+    var responseObj = this.state.response;
     return (
       <div className='form-containr'>
-        <form>
+        <section className='client-errors'>
+          {
+            this.state.emailError
+          }
+        </section>
+        <form onSubmit={ e => this.handleSubmit(e) }>
           <ReactAutocomplete
             inputProps={{ placeholder: 'example@domain.com' }}
             items={ this.state.initialExts }
@@ -93,6 +109,7 @@ export class VerifyEmail extends React.Component<any, IState> {
               return item.label.toLowerCase().indexOf(value.split('@').pop().toLowerCase()) > -1
             }
           }
+          type='email'
           getItemValue={ item => item.label}
           renderItem=
           { (item, highlighted) =>
@@ -103,13 +120,27 @@ export class VerifyEmail extends React.Component<any, IState> {
             </div>
           }
           value={ this.state.value }
-          onChange={e => this.setState({ value: e.target.value })}
-          onSelect={ emailExtension => this.setState({ value: this.state.value.slice(0, this.state.value.indexOf('@') + 1) + emailExtension })}
+          onChange={
+              e => this.setState({
+              value: e.target.value,
+              email: e.target.value
+            })
+          }
+          onSelect={
+            emailExtension =>
+              this.setState({
+                value: this.state.value.slice(0, this.state.value.indexOf('@') + 1) + emailExtension,
+                email: this.state.value.slice(0, this.state.value.indexOf('@') + 1) + emailExtension
+              })
+            }
           />
           <button type='submit'>VERIFY</button>
         </form>
-        <section>
-        </section>
+        {/* <section className='verify-email-results'>
+          {
+            responseObj
+          }
+        </section> */}
       </div>
     )
   }
@@ -119,19 +150,32 @@ export class VerifyEmail extends React.Component<any, IState> {
 //     inputProps: string;
 // }
 
-export interface extensions {
+export interface extensionsArray {
     id: number;
     label: string;
 }
 
+export interface responseObject {
+  accept_all: boolean;
+  did_you_mean: any;
+  disposable: boolean;
+  domain: string;
+  email: string;
+  free: boolean;
+  message: string;
+  reason: string;
+  result: string;
+  role: boolean;
+  sendex: number;
+  success: boolean;
+  user: string;
+}
 
 interface IState {
   email: string;
-  response: Array<object>;
+  // response: Array<object>;
+  response: Array<responseObject>;
   value: string;
-  initialExts: Array<extensions>;
+  emailError: string;
+  initialExts: Array<extensionsArray>;
 }
-
-// My regular expression template
-// var regex = new RegExp(/^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i);
-// var bppp = regex.test('hano@gmail.com');
