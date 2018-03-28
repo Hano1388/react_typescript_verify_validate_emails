@@ -52,20 +52,20 @@ export class VerifyEmail extends React.Component<any, IState> {
   //
   // }
 
-  handleSubmit(e: any) {
-    e.preventDefault();
-    this.setState({
-      email: this.state.email
-    })
-  }
+  // handleSubmit(e: any) {
+  //   e.preventDefault();
+  //   this.setState({
+  //     email: this.state.email
+  //   })
+  // }
 
-  handleChange(e: any) {
-    // e.preventDefault();
-    if (e.target.value.slice(-1) === '@') {
-        console.log('hello====================')
-    }
-    this.setState({ email: e.target.value })
-  }
+  // handleChange(e: any) {
+  //   // e.preventDefault();
+  //   if (e.target.value.slice(-1) === '@') {
+  //       console.log('hello====================')
+  //   }
+  //   this.setState({ email: e.target.value })
+  // }
 
   popUpExtensions() {
     // getting entered extension by user if user has entered any or selected from popular extensions
@@ -86,26 +86,20 @@ export class VerifyEmail extends React.Component<any, IState> {
           inputProps={{ placeholder: 'example@extension.com' }}
           items={ this.state.initialExts }
           shouldItemRender={ (item: any, value: any) => {
-            // debugger;
             return item.label.toLowerCase().indexOf(value.split('@').pop().toLowerCase()) > -1
-            {/* return item.label.toLowerCase().indexOf(value.split('@').pop().toLowerCase()) > -1 && this.popUpExtensions(); */}
-            {/* return this.popUpExtensions() */}
-          } }
-          // shouldItemRender={ (item, value) => this.renderItem(item, value) }
+            }
+          }
           getItemValue={ item => item.label}
-          renderItem={(item, highlighted) =>
+          renderItem=
+          { (item, highlighted) =>
             <div
               key={item.id}
-              style={{ backgroundColor: highlighted ? '#eee' : 'transparent'}}
-              >
-                {/* { (isExtension)? item.label : '' } */}
+              style={{ backgroundColor: highlighted ? '#eee' : 'transparent'}}>
                 { (this.popUpExtensions())? item.label : '' }
-                {/* { item.label } */}
-              </div>
+            </div>
             }
           value={ this.state.value }
           onChange={e => this.setState({ value: e.target.value })}
-          // onSelect={value => this.setState({ value })}
           onSelect={ emailExtension => this.setState({ value: this.state.value.slice(0, this.state.value.indexOf('@') + 1) + emailExtension })}
         />
         <section>
