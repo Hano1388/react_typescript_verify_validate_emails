@@ -1,5 +1,4 @@
 import * as React from 'react';
-// import * as ReactAutocomplete from 'react-autocomplete';
 const ReactAutocomplete = require('react-autocomplete') as any;
 
 export class VerifyEmail extends React.Component<any, IState> {
@@ -14,6 +13,10 @@ export class VerifyEmail extends React.Component<any, IState> {
         { id: 1, label: 'gmail.com' },
         { id: 2, label: 'yahoo.com' },
         { id: 3, label: 'hotmail.com' },
+        { id: 4, label: 'ymail.com' },
+        { id: 5, label: 'msn.com' },
+        { id: 6, label: 'email.com' },
+        { id: 7, label: 'fastmail.com' },
       ]
     }
   }
@@ -123,7 +126,6 @@ interface IState {
   email: string;
   response: Array<object>;
   value: string;
-  // initialExts: extensionGroup;
   initialExts: Array<extensions>;
 }
 
