@@ -6,6 +6,9 @@ body {
   line-height: 1.3rem;
   background-color: $background-grey;
 }
+.container {
+  margin-top: 100px;
+}
 
 input, label, select, button, textarea {
 	margin:0;
@@ -88,8 +91,18 @@ form button[type=submit]:hover {
   font-weight: 500;
 }
 
-.client-errors {
+.email-format-errors {
   font-family: Times, "Times New Roman", Helvetica, Arial, sans-serif;
-  margin-left: -80px;
+  margin-right: 190px;
   color: red;
+}
+
+.verify-email-results > div {
+  font-family: Times, "Times New Roman", Helvetica, Arial, sans-serif;
+  font-size: 14;
+  text-transform: uppercase;
+  margin-right: 30%;
+  margin-top: 1%;
+  letter-spacing: 1.5px;
+  color: green;
 }

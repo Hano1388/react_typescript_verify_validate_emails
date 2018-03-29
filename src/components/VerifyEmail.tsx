@@ -6,55 +6,44 @@ export class VerifyEmail extends React.Component<any, IState> {
     super(props);
 
     this.state = {
-      response: [],
+      verifierResponseObj: [],
       email: '',
       value: '',
       emailError: '',
-      initialExts: [
+      commonExts: [
         { id: 1, label: 'gmail.com' },
         { id: 2, label: 'yahoo.com' },
         { id: 3, label: 'hotmail.com' },
         { id: 4, label: 'ymail.com' },
         { id: 5, label: 'msn.com' },
         { id: 6, label: 'email.com' },
-        { id: 7, label: 'fastmail.com' },
+        { id: 7, label: 'gmail.co.uk' },
       ]
     }
   }
-  verifyEmail = (value: any) => {
-    // var corsApiUrl = 'https://cors-anywhere.herokuapp.com/';
-    var corsApiHost = 'cors-anywhere.herokuapp.com';
-    var corsApiUrl = 'https://' + corsApiHost + '/';
+  verifyEmail = (email: string) => {
+    const corsApiHost = 'cors-anywhere.herokuapp.com',
+          corsApiUrl  = 'https://' + corsApiHost + '/',
+          apiKey      = 'test_69bb5938b71f9418d431b954a3a8606501fd4673771c91eecba3419a40b5ce55',
+          spareApiKey = 'test_4f197423c9ab24202ae309f578a19e4db229198c2c5729e0b64cff6139cbb761',
+          URL         = 'https://api.kickbox.com/v2/verify?';
 
-    var u = new URLSearchParams();
-    u.append('email', value);
-    u.append('method', 'flickr.interestingness.getList');
-    // Verify Single Email apikey
-    u.append('api_key', 'test_4f197423c9ab24202ae309f578a19e4db229198c2c5729e0b64cff6139cbb761');
-    // Verify List of emails apikey
-    // u.append('api_key', 'live_07d3033b928d25d709c7d54bc58a60762dc57dbfc4effcf463bcef11389a852e');
-    u.append('format', 'json');
+    let UrlParams = new URLSearchParams();
+    UrlParams.append('email', email);
+    UrlParams.append('api_key', spareApiKey);
+    UrlParams.append('format', 'json');
 
-    var apiCall = fetch(corsApiUrl + 'https://api.kickbox.com/v2/verify?' + u);
+    const apiCall = fetch(corsApiUrl + URL + UrlParams);
 
     apiCall.then(response => {
       return response.json();
     }).then(result => {
       console.log(result);
       this.setState({
-        response: result
+        verifierResponseObj: result
       })
     });
   }
-
-  // componentDidUpdate(prevProps: any, prevState: any) {
-  //     const { value } = this.state;
-  //     if(value !== prevState.value){
-  //         console.log('update email value!');
-  //         this.verifyEmail(value);
-  //     }
-  //
-  // }
 
   validate = () => {
     let regex         = new RegExp(/^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i),
@@ -64,7 +53,8 @@ export class VerifyEmail extends React.Component<any, IState> {
     if(!isValidFormat) {
       isError = true;
       this.setState({
-        emailError: 'email should be in the format someone@example.com'
+        verifierResponseObj: [],
+        emailError: 'Email should be in the format: someone@example.com'
       })
     }
     return isError;
@@ -84,19 +74,19 @@ export class VerifyEmail extends React.Component<any, IState> {
     // getting entered extension by user if user has entered any or selected from popular extensions
     let enteredExt = this.state.value.slice(this.state.value.indexOf('@') + 1);
     // getting the label of popular extensions we already have in the state
-    let initialExts = this.state.initialExts.map(obj => obj.label);
+    let commonExts = this.state.commonExts.map(obj => obj.label);
     // below I am counting the number of @ signs
     let atSignCounter = this.state.value.length - this.state.value.replace(new RegExp('@', 'g'), '').length == 1;
     // if we have only one @ sign and the entered extension(if entered) is not one of the popular extensions, then the list will popup
-    let shouldPopUp = atSignCounter && !(initialExts.indexOf(enteredExt) > -1)
+    let shouldPopUp = atSignCounter && !(commonExts.indexOf(enteredExt) > -1)
     return shouldPopUp;
   }
 
   render() {
-    var responseObj = this.state.response;
+    let verifierResponse = JSON.parse(JSON.stringify(this.state.verifierResponseObj));
     return (
       <div className='form-containr'>
-        <section className='client-errors'>
+        <section className='email-format-errors'>
           {
             this.state.emailError
           }
@@ -104,7 +94,7 @@ export class VerifyEmail extends React.Component<any, IState> {
         <form onSubmit={ e => this.handleSubmit(e) }>
           <ReactAutocomplete
             inputProps={{ placeholder: 'example@domain.com' }}
-            items={ this.state.initialExts }
+            items={ this.state.commonExts }
             shouldItemRender={ (item: any, value: any) => {
               return item.label.toLowerCase().indexOf(value.split('@').pop().toLowerCase()) > -1
             }
@@ -136,26 +126,24 @@ export class VerifyEmail extends React.Component<any, IState> {
           />
           <button type='submit'>VERIFY</button>
         </form>
-        {/* <section className='verify-email-results'>
-          {
-            responseObj
-          }
-        </section> */}
+        <section className='verify-email-results'>
+          <div>
+            { verifierResponse.result }
+          </div>
+        </section>
       </div>
     )
   }
 }
-
-// interface IProps {
-//     inputProps: string;
-// }
 
 export interface extensionsArray {
     id: number;
     label: string;
 }
 
-export interface responseObject {
+export interface verifierResponseObj {
+  result: string;
+  // Below 👇 is the entire object key-values but, we just need result for the purpose of this test
   accept_all: boolean;
   did_you_mean: any;
   disposable: boolean;
@@ -164,18 +152,17 @@ export interface responseObject {
   free: boolean;
   message: string;
   reason: string;
-  result: string;
   role: boolean;
   sendex: number;
   success: boolean;
   user: string;
 }
 
+
 interface IState {
   email: string;
-  // response: Array<object>;
-  response: Array<responseObject>;
+  verifierResponseObj: Array<verifierResponseObj>;
   value: string;
   emailError: string;
-  initialExts: Array<extensionsArray>;
+  commonExts: Array<extensionsArray>;
 }
