@@ -1,6 +1,6 @@
 # Email Validator
 
-It verifies weather an email is:
+It verifies wether an email is:
   - Valid?
   - Deliverable?
   - Autocomplete common email extentions
