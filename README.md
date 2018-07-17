@@ -28,4 +28,4 @@ Visit [localhost:8080](http://localhost:8080) from your browser and you would se
 
 ![](src/images/1.png)
 
-<img src="src/images/1.png" />
+<img src="src/images/1.png?raw=true" />
