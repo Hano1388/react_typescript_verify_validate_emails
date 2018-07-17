@@ -26,6 +26,4 @@ $ npm start
 
 Visit [localhost:8080](http://localhost:8080) from your browser and you would see:
 
-<img src="https://drive.google.com/file/d/1xR1GBk9LJvsgX2nkaQ8FN58ncrBJ7Ptj/view?usp=sharing"
-style="float: left; margin-right: 10px;"
-/>
+![](https://drive.google.com/file/d/1xR1GBk9LJvsgX2nkaQ8FN58ncrBJ7Ptj/view?usp=sharing)
