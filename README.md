@@ -39,4 +39,4 @@ Visit [localhost:8080](http://localhost:8080) from your browser and you would se
 ![](src/images/4.png)
 
 
-####### Important Note: `You would need to use your own email and sign up with kickboxing API and get and (apiKey) otherwise, users won't be able to verify their email correctly. I have provided the link to get to kickboxing web APIs above. Also you need to paste your apiKey at line 27 in src/Components/VerifyEmail.tsx `
+`Important Note: You would need to use your own email and sign up with kickboxing API and get and (apiKey) otherwise, users won't be able to verify their email correctly. I have provided the link to get to kickboxing web APIs above. Also you need to paste your apiKey at line 27 in src/Components/VerifyEmail.tsx `
