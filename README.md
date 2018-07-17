@@ -27,3 +27,5 @@ $ npm start
 Visit [localhost:8080](http://localhost:8080) from your browser and you would see:
 
 ![](src/images/1.png)
+
+<img src="src/images/1.png" />
