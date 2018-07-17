@@ -25,7 +25,7 @@ export class VerifyEmail extends React.Component<any, IState> {
     const corsApiHost = 'cors-anywhere.herokuapp.com',
           corsApiUrl  = 'https://' + corsApiHost + '/',
           apiKey      = 'test_69bb5938b71f9418d431b954a3a8606501fd4673771c91eecba3419a40b5ce55',
-          spareApiKey = 'test_4f197423c9ab24202ae309f578a19e4db229198c2c5729e0b64cff6139cbb761',
+          // spareApiKey = 'test_4f197423c9ab24202ae309f578a19e4db229198c2c5729e0b64cff6139cbb761',
           URL         = 'https://api.kickbox.com/v2/verify?';
 
     let UrlParams = new URLSearchParams();
