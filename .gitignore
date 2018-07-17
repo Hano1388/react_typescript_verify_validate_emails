@@ -7,7 +7,6 @@
 # production
 /build
 /src/components/Backup.js
-/src/images
 
 # misc
 .DS_Store
